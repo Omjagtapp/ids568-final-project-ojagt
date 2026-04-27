@@ -1,0 +1,185 @@
+[
+  {
+    "event_id": "EVT-001",
+    "timestamp": "2026-04-07T14:00:00Z",
+    "event_type": "MODEL_DEPLOYMENT",
+    "actor": "Om Jagtap",
+    "model_version": "v1.0.0",
+    "model_name": "gpt2",
+    "model_sha256": "d1c76e8a1b3f2e9d4c7a5b0f8e2c4a6d9b1f3e7c",
+    "description": "Initial deployment of GPT-2 LLM Inference Server (Milestone 5). Configuration: batch_timeout_ms=50, max_batch_size=8, cache_ttl=300s.",
+    "approval_status": "approved",
+    "approved_by": "Om Jagtap",
+    "environment": "development",
+    "artifacts": ["src/server.py", "src/batching.py", "src/caching.py", "src/config.py"],
+    "tags": ["initial-deployment", "milestone-5"]
+  },
+  {
+    "event_id": "EVT-002",
+    "timestamp": "2026-04-07T14:15:00Z",
+    "event_type": "MONITORING_SETUP",
+    "actor": "Om Jagtap",
+    "model_version": "v1.0.0",
+    "description": "Prometheus instrumentation added to FastAPI application. Metrics: request latency histogram, cache hit/miss counter, active requests gauge, token throughput counter, vocab novelty gauge.",
+    "approval_status": "approved",
+    "approved_by": "Om Jagtap",
+    "environment": "development",
+    "artifacts": ["src/monitoring/instrumentation.py", "dashboards/grafana-export.json", "config/prometheus.yml"],
+    "tags": ["monitoring", "prometheus", "grafana"]
+  },
+  {
+    "event_id": "EVT-003",
+    "timestamp": "2026-04-14T09:00:00Z",
+    "event_type": "DRIFT_ALERT",
+    "actor": "automated-monitoring",
+    "model_version": "v1.0.0",
+    "description": "Weekly drift analysis (Week 1): vocabulary richness PSI=0.117 (Minor drift threshold crossed). Prompt length PSI=0.051 (Normal). No action required — monitoring closely.",
+    "approval_status": "acknowledged",
+    "approved_by": "Om Jagtap",
+    "environment": "development",
+    "drift_metrics": {
+      "vocabulary_richness_psi": 0.117,
+      "prompt_length_psi": 0.051,
+      "response_length_psi": 0.048,
+      "token_count_psi": 0.069
+    },
+    "action_taken": "No intervention. Increased monitoring frequency to daily for vocabulary richness.",
+    "tags": ["drift", "monitoring", "week-1"]
+  },
+  {
+    "event_id": "EVT-004",
+    "timestamp": "2026-04-21T09:00:00Z",
+    "event_type": "DRIFT_ALERT",
+    "actor": "automated-monitoring",
+    "model_version": "v1.0.0",
+    "description": "Weekly drift analysis (Week 2): ALL features crossed Significant drift threshold (PSI > 0.2). Vocabulary richness PSI=0.498, prompt length PSI=0.317, token count PSI=0.358. P95 latency trending upward toward SLO boundary.",
+    "approval_status": "escalated",
+    "approved_by": "Om Jagtap",
+    "environment": "development",
+    "drift_metrics": {
+      "vocabulary_richness_psi": 0.498,
+      "prompt_length_psi": 0.317,
+      "response_length_psi": 0.247,
+      "token_count_psi": 0.358
+    },
+    "action_taken": "Initiated A/B test (EVT-005) and drift diagnostic report. Increased max_new_tokens alert threshold.",
+    "tags": ["drift", "escalation", "week-2"]
+  },
+  {
+    "event_id": "EVT-005",
+    "timestamp": "2026-04-22T11:00:00Z",
+    "event_type": "EXPERIMENT_START",
+    "actor": "Om Jagtap",
+    "model_version": "v1.0.0",
+    "description": "A/B test initiated to evaluate optimized server configuration (Model B: batch_timeout_ms=100, max_batch_size=16, cache_ttl=600s) against baseline (Model A). Experiment specification: docs/experiment-specification.md. Target: n=1500/arm, 50/50 split.",
+    "approval_status": "approved",
+    "approved_by": "Om Jagtap",
+    "environment": "development",
+    "experiment_id": "exp-20260422-config-opt",
+    "arm_a": {
+      "batch_timeout_ms": 50,
+      "max_batch_size": 8,
+      "cache_ttl_seconds": 300
+    },
+    "arm_b": {
+      "batch_timeout_ms": 100,
+      "max_batch_size": 16,
+      "cache_ttl_seconds": 600
+    },
+    "tags": ["ab-test", "experiment"]
+  },
+  {
+    "event_id": "EVT-006",
+    "timestamp": "2026-04-24T15:30:00Z",
+    "event_type": "EXPERIMENT_RESULT",
+    "actor": "Om Jagtap",
+    "model_version": "v1.0.0",
+    "description": "A/B test completed. Model B wins: P95 reduction 17.7% (255→210 ms), cache hit rate +16pp (52→68%), error rate −0.3pp. Welch t-test p<0.0001, Cohen d=0.44. Recommendation: ship Model B.",
+    "approval_status": "approved",
+    "approved_by": "Om Jagtap",
+    "environment": "development",
+    "experiment_id": "exp-20260422-config-opt",
+    "outcome": "ship_model_b",
+    "statistical_results": {
+      "welch_p_value": 0.0000,
+      "cohens_d": 0.438,
+      "p95_reduction_pct": 17.7,
+      "bootstrap_ci_95_ms": [32.8, 45.6]
+    },
+    "artifacts": ["docs/recommendation-memo.md", "visualizations/ab_test_results.png"],
+    "tags": ["ab-test", "decision", "ship"]
+  },
+  {
+    "event_id": "EVT-007",
+    "timestamp": "2026-04-26T09:00:00Z",
+    "event_type": "MODEL_CONFIGURATION_CHANGE",
+    "actor": "Om Jagtap",
+    "model_version": "v1.1.0",
+    "model_name": "gpt2",
+    "model_sha256": "d1c76e8a1b3f2e9d4c7a5b0f8e2c4a6d9b1f3e7c",
+    "description": "Deployed optimized configuration (v1.1.0) following successful A/B test. Changes: batch_timeout_ms 50→100, max_batch_size 8→16, cache_ttl_seconds 300→600. Model weights unchanged.",
+    "approval_status": "approved",
+    "approved_by": "Om Jagtap",
+    "environment": "development",
+    "previous_config": {
+      "batch_timeout_ms": 50,
+      "max_batch_size": 8,
+      "cache_ttl_seconds": 300
+    },
+    "new_config": {
+      "batch_timeout_ms": 100,
+      "max_batch_size": 16,
+      "cache_ttl_seconds": 600
+    },
+    "rollback_plan": "Revert environment variables to previous values; no code change required.",
+    "tags": ["deployment", "config-change", "v1.1.0"]
+  },
+  {
+    "event_id": "EVT-008",
+    "timestamp": "2026-04-26T10:00:00Z",
+    "event_type": "GOVERNANCE_REVIEW",
+    "actor": "Om Jagtap",
+    "model_version": "v1.1.0",
+    "description": "Comprehensive governance review completed for Final Project submission. Artifacts: model card, risk register, lineage diagram, system boundary diagram, governance review, risk matrix, CTO memo.",
+    "approval_status": "approved",
+    "approved_by": "Om Jagtap",
+    "environment": "development",
+    "governance_artifacts": [
+      "docs/model-card.md",
+      "docs/risk-register.md",
+      "docs/lineage-diagram.png",
+      "docs/system-boundary-diagram.png",
+      "docs/governance-review.md",
+      "docs/risk-matrix.md",
+      "docs/cto-memo.md"
+    ],
+    "risk_summary": {
+      "critical_risks": 5,
+      "high_risks": 5,
+      "medium_risks": 2,
+      "all_mitigations_documented": true
+    },
+    "tags": ["governance", "final-project", "audit"]
+  },
+  {
+    "event_id": "EVT-009",
+    "timestamp": "2026-04-26T11:00:00Z",
+    "event_type": "MONITORING_EVENT",
+    "actor": "automated-monitoring",
+    "model_version": "v1.1.0",
+    "description": "Post-deployment monitoring check (v1.1.0). P95 latency: 210ms (target <500ms, GREEN). Cache hit rate: 68% (target >50%, GREEN). Error rate: 0.9% (target <1%, GREEN). No drift alerts active.",
+    "approval_status": "acknowledged",
+    "approved_by": "Om Jagtap",
+    "environment": "development",
+    "health_metrics": {
+      "p95_latency_ms": 210,
+      "cache_hit_rate": 0.68,
+      "error_rate": 0.009,
+      "throughput_rps": 17.8,
+      "vocab_novelty_rate": 0.06,
+      "active_requests_avg": 3.2
+    },
+    "status": "healthy",
+    "tags": ["health-check", "post-deployment"]
+  }
+]
