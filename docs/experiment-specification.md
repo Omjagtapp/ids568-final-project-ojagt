@@ -88,16 +88,19 @@ n ≈ 2 × (1.96 + 0.84)² × 95² / 25² ≈ 2 × 7.84 × 9025 / 625 ≈ **226 
 
 ## 6. Statistical Analysis Plan
 
-1. **Primary test:** Two-sample Welch t-test on mean latency (handles unequal variances).
-2. **Non-parametric validation:** Mann-Whitney U test (robust to heavy-tailed latency distributions).
-3. **Effect size:** Cohen's d (|d| > 0.2 = practical significance threshold).
-4. **Confidence interval:** 95% bootstrap CI on the mean difference A − B (5 000 resamples).
-5. **Multiple comparison correction:** Benjamini-Hochberg procedure applied to the 4 secondary metrics.
+**Primary decision metric: P95 latency reduction**
+
+1. **Primary analysis:** 95% bootstrap CI on the P95 latency difference A − B (5 000 resamples). If the entire CI is positive (i.e., A's P95 > B's P95 at both bounds) and the P95 improvement probability ≥ 95%, the primary criterion is met.
+2. **Supporting analysis — mean latency:** Two-sample Welch t-test on mean latency (handles unequal variances). Provides a conventional p-value as corroborating evidence; it is *not* the primary decision driver because P95 (not mean) is the user-facing SLO metric.
+3. **Non-parametric validation:** Mann-Whitney U test (robust to heavy-tailed latency distributions).
+4. **Effect size:** Cohen's d on mean latency (|d| > 0.2 = practical significance threshold for mean shift).
+5. **Mean bootstrap CI:** 95% bootstrap CI on the mean difference A − B (5 000 resamples).
+6. **Multiple comparison correction:** Benjamini-Hochberg procedure applied to the 4 secondary metrics.
 
 **Decision rule:**
-- If p < 0.05 AND |d| > 0.2 AND all guardrails pass: **Ship Model B**
-- If p < 0.05 AND |d| ≤ 0.2: **Ship Model B with caveat** (statistically detectable but small practical benefit)
-- If p ≥ 0.05: **Run more data** (or stop if practical significance is clearly unachievable)
+- If P95 bootstrap CI entirely positive AND P95 improvement probability ≥ 95% AND all guardrails pass: **Ship Model B**
+- If Welch p < 0.05 AND |d| ≤ 0.2 but P95 criterion not met: **Ship Model B with caveat** (mean benefit detectable but P95 improvement unconfirmed)
+- If neither criterion met: **Run more data** (or stop if practical significance is clearly unachievable)
 
 ---
 

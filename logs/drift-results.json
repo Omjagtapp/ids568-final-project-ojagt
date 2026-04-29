@@ -1,0 +1,230 @@
+[
+  {
+    "week": 1,
+    "features": {
+      "prompt_length_chars": {
+        "psi": 0.0509,
+        "ks_statistic": 0.104,
+        "ks_p_value": 0.001432,
+        "drift_severity": "none",
+        "ref_mean": 83.704,
+        "prod_mean": 88.883,
+        "mean_shift_pct": 6.19,
+        "anomaly_count": 2,
+        "anomaly_rate": 0.004,
+        "anomaly_min": 181.89015481003196,
+        "anomaly_max": 189.2013535652667
+      },
+      "vocab_richness": {
+        "psi": 0.1168,
+        "ks_statistic": 0.142,
+        "ks_p_value": 3e-06,
+        "drift_severity": "minor",
+        "ref_mean": 0.719,
+        "prod_mean": 0.693,
+        "mean_shift_pct": -3.61,
+        "anomaly_count": 2,
+        "anomaly_rate": 0.004,
+        "anomaly_min": 0.38060755261018564,
+        "anomaly_max": 1.0
+      },
+      "response_length_tokens": {
+        "psi": 0.0479,
+        "ks_statistic": 0.079,
+        "ks_p_value": 0.030608,
+        "drift_severity": "none",
+        "ref_mean": 41.45,
+        "prod_mean": 42.643,
+        "mean_shift_pct": 2.88,
+        "anomaly_count": 1,
+        "anomaly_rate": 0.002,
+        "anomaly_min": 84.41912062337452,
+        "anomaly_max": 84.41912062337452
+      },
+      "token_count": {
+        "psi": 0.0692,
+        "ks_statistic": 0.091,
+        "ks_p_value": 0.007816,
+        "drift_severity": "none",
+        "ref_mean": 17.747,
+        "prod_mean": 19.06,
+        "mean_shift_pct": 7.4,
+        "anomaly_count": 0,
+        "anomaly_rate": 0.0,
+        "anomaly_min": null,
+        "anomaly_max": null
+      }
+    }
+  },
+  {
+    "week": 2,
+    "features": {
+      "prompt_length_chars": {
+        "psi": 0.3171,
+        "ks_statistic": 0.266,
+        "ks_p_value": 0.0,
+        "drift_severity": "severe",
+        "ref_mean": 83.704,
+        "prod_mean": 102.863,
+        "mean_shift_pct": 22.89,
+        "anomaly_count": 2,
+        "anomaly_rate": 0.004,
+        "anomaly_min": 233.1531295959513,
+        "anomaly_max": 233.366382840216
+      },
+      "vocab_richness": {
+        "psi": 0.4977,
+        "ks_statistic": 0.303,
+        "ks_p_value": 0.0,
+        "drift_severity": "severe",
+        "ref_mean": 0.719,
+        "prod_mean": 0.651,
+        "mean_shift_pct": -9.51,
+        "anomaly_count": 0,
+        "anomaly_rate": 0.0,
+        "anomaly_min": null,
+        "anomaly_max": null
+      },
+      "response_length_tokens": {
+        "psi": 0.2473,
+        "ks_statistic": 0.182,
+        "ks_p_value": 0.0,
+        "drift_severity": "significant",
+        "ref_mean": 41.45,
+        "prod_mean": 45.599,
+        "mean_shift_pct": 10.01,
+        "anomaly_count": 0,
+        "anomaly_rate": 0.0,
+        "anomaly_min": null,
+        "anomaly_max": null
+      },
+      "token_count": {
+        "psi": 0.3582,
+        "ks_statistic": 0.242,
+        "ks_p_value": 0.0,
+        "drift_severity": "severe",
+        "ref_mean": 17.747,
+        "prod_mean": 21.156,
+        "mean_shift_pct": 19.21,
+        "anomaly_count": 1,
+        "anomaly_rate": 0.002,
+        "anomaly_min": 46.0,
+        "anomaly_max": 46.0
+      }
+    }
+  },
+  {
+    "week": 3,
+    "features": {
+      "prompt_length_chars": {
+        "psi": 0.8555,
+        "ks_statistic": 0.538,
+        "ks_p_value": 0.0,
+        "drift_severity": "severe",
+        "ref_mean": 83.704,
+        "prod_mean": 142.26,
+        "mean_shift_pct": 69.96,
+        "anomaly_count": 1,
+        "anomaly_rate": 0.002,
+        "anomaly_min": 353.99496858191736,
+        "anomaly_max": 353.99496858191736
+      },
+      "vocab_richness": {
+        "psi": 0.8711,
+        "ks_statistic": 0.495,
+        "ks_p_value": 0.0,
+        "drift_severity": "severe",
+        "ref_mean": 0.719,
+        "prod_mean": 0.583,
+        "mean_shift_pct": -18.93,
+        "anomaly_count": 1,
+        "anomaly_rate": 0.002,
+        "anomaly_min": 0.08018780464002066,
+        "anomaly_max": 0.08018780464002066
+      },
+      "response_length_tokens": {
+        "psi": 0.6454,
+        "ks_statistic": 0.414,
+        "ks_p_value": 0.0,
+        "drift_severity": "severe",
+        "ref_mean": 41.45,
+        "prod_mean": 55.595,
+        "mean_shift_pct": 34.13,
+        "anomaly_count": 0,
+        "anomaly_rate": 0.0,
+        "anomaly_min": null,
+        "anomaly_max": null
+      },
+      "token_count": {
+        "psi": 0.7229,
+        "ks_statistic": 0.466,
+        "ks_p_value": 0.0,
+        "drift_severity": "severe",
+        "ref_mean": 17.747,
+        "prod_mean": 27.616,
+        "mean_shift_pct": 55.61,
+        "anomaly_count": 1,
+        "anomaly_rate": 0.002,
+        "anomaly_min": 70.0,
+        "anomaly_max": 70.0
+      }
+    }
+  },
+  {
+    "week": 4,
+    "features": {
+      "prompt_length_chars": {
+        "psi": 1.1298,
+        "ks_statistic": 0.664,
+        "ks_p_value": 0.0,
+        "drift_severity": "severe",
+        "ref_mean": 83.704,
+        "prod_mean": 187.015,
+        "mean_shift_pct": 123.42,
+        "anomaly_count": 0,
+        "anomaly_rate": 0.0,
+        "anomaly_min": null,
+        "anomaly_max": null
+      },
+      "vocab_richness": {
+        "psi": 1.1698,
+        "ks_statistic": 0.66,
+        "ks_p_value": 0.0,
+        "drift_severity": "severe",
+        "ref_mean": 0.719,
+        "prod_mean": 0.477,
+        "mean_shift_pct": -33.66,
+        "anomaly_count": 0,
+        "anomaly_rate": 0.0,
+        "anomaly_min": null,
+        "anomaly_max": null
+      },
+      "response_length_tokens": {
+        "psi": 0.8618,
+        "ks_statistic": 0.558,
+        "ks_p_value": 0.0,
+        "drift_severity": "severe",
+        "ref_mean": 41.45,
+        "prod_mean": 69.55,
+        "mean_shift_pct": 67.79,
+        "anomaly_count": 1,
+        "anomaly_rate": 0.002,
+        "anomaly_min": 174.7142583425191,
+        "anomaly_max": 174.7142583425191
+      },
+      "token_count": {
+        "psi": 1.4495,
+        "ks_statistic": 0.696,
+        "ks_p_value": 0.0,
+        "drift_severity": "severe",
+        "ref_mean": 17.747,
+        "prod_mean": 37.604,
+        "mean_shift_pct": 111.89,
+        "anomaly_count": 0,
+        "anomaly_rate": 0.0,
+        "anomaly_min": null,
+        "anomaly_max": null
+      }
+    }
+  }
+]

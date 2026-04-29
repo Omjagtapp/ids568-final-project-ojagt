@@ -156,12 +156,24 @@ def evaluate(arm_a: ArmResult, arm_b: ArmResult) -> dict:
     ])
     ci_low, ci_high = float(np.percentile(boot_diffs, 2.5)), float(np.percentile(boot_diffs, 97.5))
 
+    # Bootstrap 95% CI on P95 difference (A - B) — primary metric
+    rng_p95 = np.random.default_rng(1)
+    p95_boot_diffs = np.array([
+        np.percentile(rng_p95.choice(a_clean, len(a_clean)), 95)
+        - np.percentile(rng_p95.choice(b_clean, len(b_clean)), 95)
+        for _ in range(n_boot)
+    ])
+    p95_ci_low = float(np.percentile(p95_boot_diffs, 2.5))
+    p95_ci_high = float(np.percentile(p95_boot_diffs, 97.5))
+    p95_improvement_prob = float(np.mean(p95_boot_diffs > 0))
+
     # Cohen's d
     pooled_std = np.sqrt((np.var(a_clean, ddof=1) + np.var(b_clean, ddof=1)) / 2)
     cohens_d = float((np.mean(a_clean) - np.mean(b_clean)) / pooled_std)
 
     # P95 reduction
-    p95_reduction_pct = (stats_a["p95"] - stats_b["p95"]) / stats_a["p95"] * 100
+    p95_diff = float(stats_a["p95"] - stats_b["p95"])
+    p95_reduction_pct = p95_diff / stats_a["p95"] * 100
 
     # Cache hit rate delta
     hit_rate_a = arm_a.cache_hits / arm_a.n
@@ -176,7 +188,10 @@ def evaluate(arm_a: ArmResult, arm_b: ArmResult) -> dict:
         "mannwhitney_p_value": float(p_value_mw),
         "bootstrap_ci_95": [ci_low, ci_high],
         "cohens_d": cohens_d,
+        "p95_diff": p95_diff,
         "p95_reduction_pct": float(p95_reduction_pct),
+        "p95_bootstrap_ci_95": [p95_ci_low, p95_ci_high],
+        "p95_improvement_probability": p95_improvement_prob,
         "cache_hit_rate_a": float(hit_rate_a),
         "cache_hit_rate_b": float(hit_rate_b),
         "statistically_significant": float(p_value_t) < 0.05,
@@ -286,11 +301,15 @@ def _print_results(results: dict) -> None:
     print(f"{'P99 (ms)':<30} {a['p99']:>12.1f} {b['p99']:>12.1f}")
     print(f"{'Cache hit rate':<30} {results['cache_hit_rate_a']:>11.1%} {results['cache_hit_rate_b']:>11.1%}")
     print()
+    print(f"--- Primary metric: P95 latency ---")
+    print(f"P95 difference A-B:          {results['p95_diff']:.1f} ms  ({results['p95_reduction_pct']:.1f}% reduction)")
+    print(f"P95 bootstrap 95% CI (A-B):  [{results['p95_bootstrap_ci_95'][0]:.1f}, {results['p95_bootstrap_ci_95'][1]:.1f}] ms")
+    print(f"P95 improvement probability: {results['p95_improvement_probability']:.1%}")
+    print(f"--- Supporting: mean latency ---")
     print(f"Welch t-test:  t={results['welch_t_stat']:.3f}, p={results['welch_p_value']:.4f}")
     print(f"Mann-Whitney:  U={results['mannwhitney_u_stat']:.0f}, p={results['mannwhitney_p_value']:.4f}")
     print(f"Cohen's d:     {results['cohens_d']:.3f}")
     print(f"Bootstrap 95% CI on mean diff (A-B): [{results['bootstrap_ci_95'][0]:.1f}, {results['bootstrap_ci_95'][1]:.1f}] ms")
-    print(f"P95 reduction: {results['p95_reduction_pct']:.1f}%")
     print()
     sig = "YES" if results["statistically_significant"] else "NO"
     prac = "YES" if results["practical_significance"] else "NO"

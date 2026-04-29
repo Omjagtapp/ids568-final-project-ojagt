@@ -80,6 +80,7 @@ ids568-final-project-ojagt/
 | Python simulation script | [src/ab_test/simulation.py](src/ab_test/simulation.py) |
 | Results visualization | [visualizations/ab_test_results.png](visualizations/ab_test_results.png) |
 | Recommendation memo | [docs/recommendation-memo.md](docs/recommendation-memo.md) |
+| **Generated JSON results** | [logs/ab-test-results.json](logs/ab-test-results.json) |
 
 ### Component 3: Model Card & Governance Packet
 | Deliverable | Location |
@@ -98,6 +99,7 @@ ids568-final-project-ojagt/
 | Severity heatmap | [visualizations/drift_severity_heatmap.png](visualizations/drift_severity_heatmap.png) |
 | Anomaly rate | [visualizations/drift_anomaly_rate.png](visualizations/drift_anomaly_rate.png) |
 | Diagnostic report | [docs/drift-diagnostic-report.md](docs/drift-diagnostic-report.md) |
+| **Generated JSON results** | [logs/drift-results.json](logs/drift-results.json) |
 
 ### Component 5: AI Risk Assessment & Reflective Summary
 | Deliverable | Location |
@@ -112,7 +114,7 @@ ids568-final-project-ojagt/
 ## Setup & Reproduction
 
 ### Prerequisites
-- Python 3.11+
+- Python 3.11 or 3.12 recommended (tested on 3.11; 3.13 works but some dependency wheels may require compilation)
 - pip
 
 ### 1. Clone and install
@@ -171,7 +173,36 @@ python -m src.monitoring.instrumentation --url http://localhost:8000 --n 300
 python -m py_compile src/monitoring/instrumentation.py && echo "OK"
 python -m py_compile src/ab_test/simulation.py && echo "OK"
 python -m py_compile src/drift/drift_detection.py && echo "OK"
+python -m py_compile src/generate_diagrams.py && echo "OK"
 ```
+
+### Full Verification
+
+Run all checks end-to-end after a fresh install:
+
+```bash
+# 1. Syntax check all source modules
+python -m py_compile src/monitoring/instrumentation.py src/ab_test/simulation.py src/drift/drift_detection.py src/generate_diagrams.py
+
+# 2. Smoke tests (fast, no server required)
+python -m pytest tests/ -v
+
+# 3. A/B simulation (dry-run — no files written)
+python -m src.ab_test.simulation --dry-run
+
+# 4. Drift detection (writes to /tmp to avoid repo pollution)
+python -m src.drift.drift_detection --output /tmp/drift_check
+```
+
+> **Note:** The live traffic generator (`src/monitoring/instrumentation.py --url ...`) requires the Milestone 5 GPT-2 inference server running locally on port 8000. The steps above do not require it.
+
+### Smoke Tests
+
+```bash
+python -m pytest tests/ -v
+```
+
+These tests verify that the core modules (`simulation.py`, `drift_detection.py`, `instrumentation.py`) load correctly, return plausible results, and can attach to a FastAPI app. They are **not** full integration tests — they run without Docker, Grafana, Prometheus, or the GPT-2 model, and complete in under 10 seconds.
 
 ---
 

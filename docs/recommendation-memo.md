@@ -21,9 +21,16 @@ The A/B experiment ran 1 500 requests per arm under the `mixed` traffic scenario
 | Cache Hit Rate | 52.0% | 68.0% | **+30.8% ↑** |
 | Error Rate | 1.2% | 0.9% | **−25.0% ↓** |
 
-**Statistical significance:** Welch t-test p < 0.0001; Mann-Whitney U p < 0.0001.  
-**Effect size:** Cohen's d = 0.44 (medium practical significance, exceeds the d > 0.20 threshold).  
-**Bootstrap 95% CI on mean difference (A − B):** [32.8 ms, 45.6 ms] — the entire interval is positive (B is faster), confirming the direction of effect.
+**Primary metric — P95 latency (per experiment specification):**
+- P95 difference A − B: **45.0 ms** (17.7% reduction, exceeds the 10% MDE target)
+- P95 bootstrap 95% CI (A − B): **[38.0 ms, 51.3 ms]** — entire interval positive; Model B is unambiguously faster at the tail
+- P95 improvement probability: **100.0%** across 5 000 bootstrap resamples
+
+**Supporting analysis — mean latency:**
+Welch t-test p < 0.0001; Mann-Whitney U p < 0.0001; Cohen's d = 0.44 (medium practical significance).  
+Bootstrap 95% CI on mean difference (A − B): [32.8 ms, 45.6 ms] — corroborates the P95 result.
+
+**Primary criterion met:** P95 CI entirely positive + improvement probability = 100% + all guardrails pass → **Ship Model B**.
 
 ### Why These Results Make Physical Sense
 

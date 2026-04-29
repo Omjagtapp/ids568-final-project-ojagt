@@ -319,18 +319,19 @@ def print_summary(drift_results: list[dict]) -> None:
     header = f"{'Feature':<35} " + "  ".join(f"{'Wk'+str(r['week']):>8}" for r in drift_results)
     print(header)
     print("-"*65)
+    _SEV_ABBR = {"none": "N", "minor": "M", "significant": "S", "severe": "X"}
     for feature in drift_results[0]["features"]:
         vals = "  ".join(
             f"{r['features'][feature]['psi']:>8.3f}"
             for r in drift_results
         )
         sevs = " ".join(
-            f"({r['features'][feature]['drift_severity'][0].upper()})"
+            f"({_SEV_ABBR[r['features'][feature]['drift_severity']]})"
             for r in drift_results
         )
         print(f"{FEATURE_LABELS[feature]:<35} {vals}  {sevs}")
     print()
-    print("Severity key: N=None (<0.10)  M=Minor (<0.20)  S=Significant (<0.25)  X=Severe (≥0.25)")
+    print("Severity key: N=None (<0.10)  M=Minor (<0.20)  S=Significant (<0.25)  X=Severe (>=0.25)")
     print("="*65)
 
 

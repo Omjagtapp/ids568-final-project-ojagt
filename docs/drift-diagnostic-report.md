@@ -34,10 +34,10 @@ Reference window: 1 000 requests from Week 0 (normal English Q&A workload).
 
 | Feature | Week 1 | Week 2 | Week 3 | Week 4 |
 |---|---|---|---|---|
-| Prompt Length (chars) | 0.051 (None) | 0.317 (Sig.) | 0.856 (Sig.) | 1.130 (Sig.) |
-| Vocabulary Richness | 0.117 (Minor) | 0.498 (Sig.) | 0.871 (Sig.) | 1.170 (Sig.) |
-| Response Length (tokens) | 0.048 (None) | 0.247 (Sig.) | 0.645 (Sig.) | 0.862 (Sig.) |
-| Token Count | 0.069 (None) | 0.358 (Sig.) | 0.723 (Sig.) | 1.450 (Sig.) |
+| Prompt Length (chars) | 0.051 (None) | 0.317 (Sev.) | 0.856 (Sev.) | 1.130 (Sev.) |
+| Vocabulary Richness | 0.117 (Minor) | 0.498 (Sev.) | 0.871 (Sev.) | 1.170 (Sev.) |
+| Response Length (tokens) | 0.048 (None) | 0.247 (Sig.) | 0.645 (Sev.) | 0.862 (Sev.) |
+| Token Count | 0.069 (None) | 0.358 (Sev.) | 0.723 (Sev.) | 1.450 (Sev.) |
 
 **PSI thresholds:** None < 0.10 | Minor 0.10–0.20 | Significant 0.20–0.25 | Severe ≥ 0.25
 
