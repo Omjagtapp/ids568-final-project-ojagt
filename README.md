@@ -47,7 +47,11 @@ ids568-final-project-ojagt/
 ├── config/
 │   └── prometheus.yml              # Prometheus scrape configuration
 ├── logs/
-│   └── audit-trail.json            # Structured audit log (9 events)
+│   ├── audit-trail.json            # Structured audit log (9 events)
+│   ├── ab-test-results.json        # Generated A/B test statistical results
+│   └── drift-results.json          # Generated drift detection PSI/severity results
+├── tests/
+│   └── test_smoke.py               # Smoke tests (8 tests; no live server required)
 ├── visualizations/
 │   ├── ab_test_results.png         # A/B test: latency distributions + CI
 │   ├── drift_psi_over_time.png     # Drift: PSI by feature over 4 weeks
